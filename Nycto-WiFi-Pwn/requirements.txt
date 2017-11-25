@@ -1,0 +1,7 @@
+Aircrack suite
+Reaver
+Pixiewps
+Pyrit
+zizzania
+iw
+WPA supplicant

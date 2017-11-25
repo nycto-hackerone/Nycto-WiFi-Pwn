@@ -1,191 +1,105 @@
 #!/bin/bash
 
-VERS="20171121"
-
 IFACE=""
 REPLY=""
 
-
 if [ -e "cracked.txt" ]; then
-	echo ""
-else
-	echo "" > cracked.txt
+      echo ""
+  else
+      echo "" > cracked.txt
 fi
 
 if [ -e "redlist.txt" ]; then
-	echo ""
-else
-	echo "" > redlist.txt
+      echo ""
+  else
+      echo "" > redlist.txt
 fi
 
-
 if [[ "$(locale | grep LANG | grep -o en)" == "en" ]]; then
-	LANGUAGE="English"
-else
-	LANGUAGE="Russian"
+        LANGUAGE="English"
+  
 fi
 
 declare -A Strings1
 Strings1["English"]="\033[1mThere is no wireless interface on your system. Exit.\e[0m"
-Strings1["Russian"]="\033[1mБеспроводные сетевые интерфейсы отсутствуют. Выход из программы.\e[0m"
-
 declare -A Strings2
 Strings2["English"]="\033[1mThere is one wireless interface on your system. Automatically Selected\e[0m"
-Strings2["Russian"]="\033[1mНайден один беспроводной интерфейс - выбран автоматически\e[0m"
-
 declare -A Strings3
 Strings3["English"]="Available wireless interfaces: "
-Strings3["Russian"]="Доступные беспроводные интерфейсы: "
-
 declare -A Strings4
 Strings4["English"]="Enter the number corresponding to the selected interface: "
-Strings4["Russian"]="Введите цифру, соответствующую выбранному интерфейсу: "
-
 declare -A Strings5
 Strings5["English"]="Error. There is no selected wireless interface. Start from the interface selection"
-Strings5["Russian"]="Ошибка: беспроводной сетевой интерфейс ещё не выбран. Начните с выбора беспроводного интерфейса"
-
 declare -A Strings6
 Strings6["English"]="Checking to solve possible \"bad FCS\" problem if exists. Parameterizing..."
-Strings6["Russian"]="Проверка возможного решения проблемы \"bad FCS (контроля последовательности кадров)\" если она существует. Параметризация..."
-
 declare -A Strings7
 Strings7["English"]="\033[1mLooking for Wi-Fi networks with WPS enabled\e[0m"
-Strings7["Russian"]="\033[1mПоиск Wi-Fi сетей с WPS\e[0m"
-
 declare -A Strings8
 Strings8["English"]="\033[1mAutomatic attack Pixie Dust against every WPS enabled Wi-Fi network\e[0m"
-Strings8["Russian"]="\033[1mАвтоматическая атака Pixie Dust на все Wi-Fi сети с WPS\e[0m"
-
 declare -A Strings9
 Strings9["English"]="Enter the aim number: "
-Strings9["Russian"]="Введите номер цели: "
-
 declare -A Strings10
 Strings10["English"]="You selected: "
-Strings10["Russian"]="Вы выбрали: "
-
 declare -A Strings11
 Strings11["English"]="Starting the attack: "
-Strings11["Russian"]="Запускаем атаку: "
-
 declare -A Strings12
 Strings12["English"]="Processing "
-Strings12["Russian"]="Работаем с "
-
 declare -A Strings13
 Strings13["English"]="\033[0;31mPIN is found, trying WPA passphrase. PIN: \e[0m"
-Strings13["Russian"]="\033[0;31mПин найден, получаем пароль от Wi-Fi. Пин: \e[0m"
-
 declare -A Strings14
 Strings14["English"]="Discovered WPS enabled Wi-Fi networks:"
-Strings14["Russian"]="Найдены сети с WPS:"
-
 declare -A Strings15
 Strings15["English"]="Fail."
-Strings15["Russian"]="Неудача."
-
 declare -A Strings16
 Strings16["English"]="\033[0;31mWPS enabled Wi-Fi networks are not found\e[0m"
-Strings16["Russian"]="\033[0;31mСети с WPS не найдены\e[0m"
-
 declare -A Strings17
 Strings17["English"]="\033[1mLooking for Open Wi-Fi networks\e[0m"
-Strings17["Russian"]="\033[1mПоиск Wi-Fi сетей не защищённых паролем\e[0m"
-
 declare -A Strings18
 Strings18["English"]="\033[0;32mDiscovered Open Wi-Fi networks:\e[0m"
-Strings18["Russian"]="\033[0;32mНайдены следующие открытые сети:\e[0m"
-
 declare -A Strings19
 Strings19["English"]="\033[0;31mOpen Wi-Fi networks are not found\e[0m"
-Strings19["Russian"]="\033[0;31mОткрытых Wi-Fi сетей не найдено\e[0m"
-
 declare -A Strings20
 Strings20["English"]="\033[1mLooking for Wi-Fi networks with WEP encryption\e[0m"
-Strings20["Russian"]="\033[1mПоиск Wi-Fi сетей с WEP шифрованием\e[0m"
-
 declare -A Strings21
 Strings21["English"]="Discovered Wi-Fi networks with WEP encryption:"
-Strings21["Russian"]="Найдены следующие сети с WEP:"
-
 declare -A Strings22
 Strings22["English"]="\033[0;32mCracked Wi-Fi networks with WEP: \e[0m"
-Strings22["Russian"]="\033[0;32mВзломана сеть с WEP: \e[0m"
-
 declare -A Strings23
 Strings23["English"]="\033[0;32mKey: \e[0m"
-Strings23["Russian"]="\033[0;32mКлюч: \e[0m"
-
 declare -A Strings24
 Strings24["English"]="\033[0;31mWi-Fi networks with WEP encryption are not found\e[0m"
-Strings24["Russian"]="\033[0;31mWi-Fi сетей с WEP не найдено\e[0m"
-
 declare -A Strings25
 Strings25["English"]="\033[1mCollecting handshakes from every Wi-Fi network in range\e[0m"
-Strings25["Russian"]="\033[1mСбор хенщшейков со всех Wi-Fi сетей\e[0m"
-
 declare -A Strings26
 Strings26["English"]="Analyze collected handshakes:"
-Strings26["Russian"]="Анализ собранных хендшейков:"
-
 declare -A Strings27
 Strings27["English"]="Selected wireless interface "
-Strings27["Russian"]="Выбран беспроводной интерфейс "
-
 declare -A Strings28
 Strings28["English"]=". Mode: "
-Strings28["Russian"]=". В режиме: "
-
 declare -A Strings29
 Strings29["English"]="Wireless interface still is not selected"
-Strings29["Russian"]="Беспроводной сетевой интерфейс ещё не выбран"
-
 declare -A Strings30
 Strings30["English"]="Enter the number corresponding to the selected menu item: "
-Strings30["Russian"]="Введите цифру, соответствующую выбранному пункту меню: "
-
 declare -A Strings31
 Strings31["English"]="The script is over."
-Strings31["Russian"]="Программа завершена."
-
 declare -A Strings32
 Strings32["English"]="If you cracked WPS PIN, you are able to obtain WPA password. Connection to the target AP is necessary. Select the target AP and enter the WPS PIN."
-Strings32["Russian"]="Если вам известен WPS ПИН, то вы можете получить WPA пароль. Для этого необходимо подключиться к целевой ТД. Сейчас будут показаны доступные ТД, выберите желаемую, а затем введите известный ПИН."
-
 declare -A Strings33
 Strings33["English"]="Enter WPS PIN: "
-Strings33["Russian"]="Введите WPS ПИН: "
-
 declare -A Strings34
 Strings34["English"]="Wait for 1 minite."
-Strings34["Russian"]="Подождите 1 минуту."
-
 declare -A Strings35
 Strings35["English"]="\033[0;32mThe password is found: \e[0m"
-Strings35["Russian"]="\033[0;32mНайден пароль: \e[0m"
-
 declare -A Strings36
 Strings36["English"]="The password is not found. It is worth trying again."
-Strings36["Russian"]="Пароль не найден. Завершение работы. Рекомендуется попробовать ещё несколько раз."
-
 declare -A Strings37
 Strings37["English"]="WPS of this network is locked or the network is included in the Redlist or in the Cracked List. Skipping."
-Strings37["Russian"]="WPS для этой сети заблокирован, либо она присутствует в списке взломанных или в списке исключений. Пропускаем."
-
 declare -A Strings38
 Strings38["English"]="The first attempt of two attempts"
-Strings38["Russian"]="Попытка 1 из 2."
-
 declare -A Strings39
 Strings39["English"]="The second attempt of two attempts"
-Strings39["Russian"]="Попытка 2 из 2."
-
 declare -A Strings40
 Strings40["English"]="Wait 3 minutes"
-Strings40["Russian"]="Подождите 3 минуты."
-
-
 function selectInterface {
 	clear
 	COUNTER=0
@@ -528,7 +442,7 @@ function showWPAPassFromPin {
 
 		sudo xterm -geometry "150x50+50+0" -e "sudo wash -i $IFACE $fcs | tee /tmp/wash.all"
 		echo -e 'Number\tBSSID\t\t   Channel    RSSI  WPS Version  WPS Locked  ESSID'
-		echo '---------------------------------------------------------------------------------------------------------------'
+		echo '-------------------------------------------------------------------------------------------------'
 		cat /tmp/wash.all | grep -E '[A-Fa-f0-9:]{11}' | cat -b
 
 		sudo ip link set "$IFACE" down && sudo iw "$IFACE" set type managed && sudo ip link set "$IFACE" up
@@ -608,48 +522,15 @@ else
 fi
 
 
-if [[ "$LANGUAGE" == "Russian" ]]; then
+if [[ "$LANGUAGE" == "English" ]]; then
 
 cat << _EOF_
-███╗   ██╗██╗   ██╗ ██████╗████████╗ ██████╗       ██╗    ██╗██╗███████╗██╗      ██████╗ ██╗    ██╗███╗   ██╗
-████╗  ██║╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔═══██╗      ██║    ██║██║██╔════╝██║      ██╔══██╗██║    ██║████╗  ██║
-██╔██╗ ██║ ╚████╔╝ ██║        ██║   ██║   ██║█████╗██║ █╗ ██║██║█████╗  ██║█████╗██████╔╝██║ █╗ ██║██╔██╗ ██║
-██║╚██╗██║  ╚██╔╝  ██║        ██║   ██║   ██║╚════╝██║███╗██║██║██╔══╝  ██║╚════╝██╔═══╝ ██║███╗██║██║╚██╗██║
-██║ ╚████║   ██║   ╚██████╗   ██║   ╚██████╔╝      ╚███╔███╔╝██║██║     ██║      ██║     ╚███╔███╔╝██║ ╚████║
-╚═╝  ╚═══╝   ╚═╝    ╚═════╝   ╚═╝    ╚═════╝        ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝      ╚═╝      ╚══╝╚══╝ ╚═╝  ╚═══╝
-Информация:
-$INF
-
-Меню:
-Выберите желаемое действие:
-1. Выбрать беспроводной сетевой интерфейс
-2. Перевести интерфейс в режим монитора
-3. Перевести интерфейс в режим монитора + убить все мешающие ему процессы + завершить NetworkManager
-4. Показать открытые Wi-Fi сети
-5. Атака на WEP
-6. Атака на WPS
-7. Атака Pixie Dust (на все ТД с WPS)
-8. Получение WPA-PSK пароля при известном WPS PIN
-9. Атака на WPA2/WPA
-10. Онлайн атака на WPA-PSK пароль (ещё не реализована)
-11. Автоматический аудит Wi-Fi сетей
-
-12. Перевести интерфейс в управляемый режим
-
-0. Для выхода из программы
-_EOF_
-
-
-
-else
-
-cat << _EOF_
-███╗   ██╗██╗   ██╗ ██████╗████████╗ ██████╗       ██╗    ██╗██╗███████╗██╗      ██████╗ ██╗    ██╗███╗   ██╗
-████╗  ██║╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔═══██╗      ██║    ██║██║██╔════╝██║      ██╔══██╗██║    ██║████╗  ██║
-██╔██╗ ██║ ╚████╔╝ ██║        ██║   ██║   ██║█████╗██║ █╗ ██║██║█████╗  ██║█████╗██████╔╝██║ █╗ ██║██╔██╗ ██║
-██║╚██╗██║  ╚██╔╝  ██║        ██║   ██║   ██║╚════╝██║███╗██║██║██╔══╝  ██║╚════╝██╔═══╝ ██║███╗██║██║╚██╗██║
-██║ ╚████║   ██║   ╚██████╗   ██║   ╚██████╔╝      ╚███╔███╔╝██║██║     ██║      ██║     ╚███╔███╔╝██║ ╚████║
-╚═╝  ╚═══╝   ╚═╝    ╚═════╝   ╚═╝    ╚═════╝        ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝      ╚═╝      ╚══╝╚══╝ ╚═╝  ╚═══╝
+███╗   ██╗██╗   ██╗ ██████╗████████╗ ██████╗       ██╗    ██╗██╗███████╗██╗
+████╗  ██║╚██╗ ██╔╝██╔════╝╚══██╔══╝██╔═══██╗      ██║    ██║██║██╔════╝██║
+██╔██╗ ██║ ╚████╔╝ ██║        ██║   ██║   ██║█████╗██║ █╗ ██║██║█████╗  ██║
+██║╚██╗██║  ╚██╔╝  ██║        ██║   ██║   ██║╚════╝██║███╗██║██║██╔══╝  ██║
+██║ ╚████║   ██║   ╚██████╗   ██║   ╚██████╔╝      ╚███╔███╔╝██║██║     ██║
+╚═╝  ╚═══╝   ╚═╝    ╚═════╝   ╚═╝    ╚═════╝        ╚══╝╚══╝ ╚═╝╚═╝     ╚═╝
 Information:
 $INF
 
@@ -736,3 +617,8 @@ fi
 
 
 showMainMenu
+
+
+
+
+

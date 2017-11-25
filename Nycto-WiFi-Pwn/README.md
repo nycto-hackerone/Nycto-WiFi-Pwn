@@ -25,6 +25,9 @@ Bruteforce PIN attack does not have timeout and it is not included in automate a
 - iw
 - WPA supplicant
 
+pip install -r requirements.txt
+```
+
 # Installation # Nycto-WiFi-Pwn
 git clone https://github.com/Nycto-WiFi-Pwn
 
